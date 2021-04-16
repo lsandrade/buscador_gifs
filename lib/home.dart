@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   Future<Map> _getGifs() async {
     String url = (_search == null)
         ? "$base_url/trending?api_key=$api_key&limit=20&rating=g"
-        : "$base_url/search?api_key=$api_key&q=$_search&limit=20&offset=$_offset&rating=g&lang=en";
+        : "$base_url/search?api_key=$api_key&q=$_search&limit=19&offset=$_offset&rating=g&lang=en";
 
     http.Response response = await http.get(url);
 
@@ -33,6 +33,8 @@ class _HomeState extends State<Home> {
       print(map);
     });
   }
+
+  int _getCount(List data) => (_search == null) ? data.length : data.length + 1;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,12 @@ class _HomeState extends State<Home> {
                   border: OutlineInputBorder()),
               style: TextStyle(color: Colors.white, fontSize: 18.0),
               textAlign: TextAlign.center,
+              onSubmitted: (text) {
+                setState(() {
+                  _search = text;
+                  _offset = 0;
+                });
+              },
             ),
           ),
           Expanded(
@@ -92,12 +100,36 @@ class _HomeState extends State<Home> {
       padding: EdgeInsets.all(10.0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
-      itemCount: snapshot.data["data"].length,
+      itemCount: _getCount(snapshot.data["data"]),
       itemBuilder: (context, index) {
-        return GestureDetector(
-          child: Image.network(
-              snapshot.data["data"][index]["images"]["fixed_height"]["url"]),
-        );
+        if (_search == null || index < snapshot.data["data"].length)
+          return GestureDetector(
+            child: Image.network(
+                snapshot.data["data"][index]["images"]["fixed_height"]["url"]),
+          );
+        else
+          return Container(
+            child: GestureDetector(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 70.0,
+                  ),
+                  Text(
+                    "Carregar mais...",
+                    style: TextStyle(color: Colors.white, fontSize: 22.0),
+                  )
+                ],
+              ),
+              onTap: () {
+                setState(() {
+                  _offset += 19;
+                });
+              },
+            ),
+          );
       },
     );
   }
