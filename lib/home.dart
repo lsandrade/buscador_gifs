@@ -86,6 +86,19 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _createGifTable(BuildContext context, AsyncSnapshot<dynamic> snapshot) {}
-
+  Widget _createGifTable(
+      BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+    return GridView.builder(
+      padding: EdgeInsets.all(10.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
+      itemCount: snapshot.data["data"].length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          child: Image.network(
+              snapshot.data["data"][index]["images"]["fixed_height"]["url"]),
+        );
+      },
+    );
+  }
 }
