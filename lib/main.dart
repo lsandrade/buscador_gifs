@@ -6,9 +6,6 @@ void main() {
   runApp(MaterialApp(
     title: "Buscador de gifs",
     home: Home(),
-    theme: ThemeData(
-      hintColor: Colors.white,
-      primaryColor: Colors.white
-    ),
+    theme: ThemeData(hintColor: Colors.white, primaryColor: Colors.white),
   ));
 }

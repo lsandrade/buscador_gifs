@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:buscador_gifs/gif_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -106,6 +107,11 @@ class _HomeState extends State<Home> {
           return GestureDetector(
             child: Image.network(
                 snapshot.data["data"][index]["images"]["fixed_height"]["url"]),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        GifPage(snapshot.data["data"][index]))),
           );
         else
           return Container(
