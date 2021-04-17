@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   int _offset = 0;
 
   Future<Map> _getGifs() async {
-    String url = (_search == null)
+    String url = (_search == null || _search.isEmpty)
         ? "$base_url/trending?api_key=$api_key&limit=20&rating=g"
         : "$base_url/search?api_key=$api_key&q=$_search&limit=19&offset=$_offset&rating=g&lang=en";
 
